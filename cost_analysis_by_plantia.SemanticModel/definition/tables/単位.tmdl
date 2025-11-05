@@ -1,0 +1,33 @@
+table 単位
+	lineageTag: 49f62ced-10af-4f97-924e-2473857a09ba
+
+	column 単位
+		dataType: string
+		lineageTag: 185214a8-bcdb-4978-9578-0883a41143f0
+		summarizeBy: none
+		sourceColumn: 単位
+
+		annotation SummarizationSetBy = Automatic
+
+	column 順番
+		dataType: int64
+		formatString: 0
+		lineageTag: 4158c379-e3b9-49e4-86f1-5526a7b63606
+		summarizeBy: sum
+		sourceColumn: 順番
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 単位 = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45Wetrb/LStTUlHyVgpVida6fnMfU92tENEjMAiT1taIFxDCBfMNlGKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [単位 = _t, 順番 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"単位", type text}, {"順番", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

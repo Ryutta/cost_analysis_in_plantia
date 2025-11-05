@@ -1,0 +1,160 @@
+expression Parameter1 = #"Sample File" meta [IsParameterQuery=true, BinaryIdentifier=#"Sample File", Type="Binary", IsParameterQueryRequired=true]
+	lineageTag: 6e7380d7-0925-4b54-b10c-d83ef7edb3e0
+	queryGroup: 'Transform File from hozen_cycle\Helper Queries'
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transform Sample File' =
+		let
+		    Source = Excel.Workbook(Parameter1, null, true),
+		    #"DATA-MAP_Sheet" = Source{[Item="DATA-MAP",Kind="Sheet"]}[Data],
+		    #"Removed Top Rows" = Table.Skip(#"DATA-MAP_Sheet",1),
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Removed Top Rows", [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+	lineageTag: 4ca46c64-34a8-4e1c-9289-122cf9bebdf5
+	queryGroup: 'Transform File from hozen_cycle'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Sample File' =
+		let
+		    ソース = SharePoint.Contents("https://mchcgr.sharepoint.com/sites/MCJP-DP-101P1",[ApiVersion=15]),
+		    #"101P180_Employee" = ソース{[Name="101P180_Employee"]}[Content],
+		    #"101P180 設備技術部 社員" = #"101P180_Employee"{[Name="101P180 設備技術部 社員"]}[Content],
+		    #"M システム・ネットワーク" = #"101P180 設備技術部 社員"{[Name="M.システム・ネットワーク"]}[Content],
+		    #"M7 PowerBI" = #"M システム・ネットワーク"{[Name="M7.PowerBI"]}[Content],
+		    #"(運用中)" = #"M7 PowerBI"{[Name="(運用中)"]}[Content],
+		    保全周期_コスト分析 = #"(運用中)"{[Name="保全周期_コスト分析"]}[Content],
+		    Navigation1 = 保全周期_コスト分析{0}[Content]
+		in
+		    Navigation1
+		
+		
+		// let
+		//     Source = Folder.Files("C:\Users\0057769\Downloads\hozen_cycle"),
+		//     Navigation1 = Source{20}[Content]
+		// in
+		//     Navigation1
+	lineageTag: aba3e38a-750b-4e82-b1d5-0ca6052b76a2
+	queryGroup: 'Transform File from hozen_cycle\Helper Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transform File' =
+		let
+		    Source = (Parameter1 as binary) => let
+		    Source = Excel.Workbook(Parameter1, null, true),
+		    #"DATA-MAP_Sheet" = Source{[Item="DATA-MAP",Kind="Sheet"]}[Data],
+		    #"Removed Top Rows" = Table.Skip(#"DATA-MAP_Sheet",1),
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Removed Top Rows", [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+		in
+		    Source
+	mAttributes: [ FunctionQueryBinding = "{""exemplarFormulaName"":""Transform Sample File""}" ]
+	lineageTag: abe61055-7566-49f8-9bc1-ab7f5f4338ba
+	queryGroup: 'Transform File from hozen_cycle\Helper Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
+
+expression riskEva_2024 =
+		let
+		    Source = PowerPlatform.Dataflows(null),
+		    Workspaces = Source{[Id="Workspaces"]}[Data],
+		    #"4fb6549a-1744-4efc-b1c8-3ed67e16c00e" = Workspaces{[workspaceId="4fb6549a-1744-4efc-b1c8-3ed67e16c00e"]}[Data],
+		    #"77b56838-d50f-4d4c-a0dd-6c2e70cf2ba2" = #"4fb6549a-1744-4efc-b1c8-3ed67e16c00e"{[dataflowId="77b56838-d50f-4d4c-a0dd-6c2e70cf2ba2"]}[Data],
+		    Query_2024_ = #"77b56838-d50f-4d4c-a0dd-6c2e70cf2ba2"{[entity="Query_2024",version=""]}[Data],
+		    #"Renamed Columns" = Table.RenameColumns(Query_2024_,{{"勘定コード.1", "勘定コード"}, {"予算区分.1", "予算区分"}, {"予算目的.1", "予算目的"}, {"予算管理No.", "予算管理No"}, {"原価センター", "原価センタ"}})
+		in
+		    #"Renamed Columns"
+	lineageTag: b295296f-57dd-40f8-b917-a203a9868bc7
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression riskEva_2025 =
+		let
+		    Source = PowerPlatform.Dataflows(null),
+		    Workspaces = Source{[Id="Workspaces"]}[Data],
+		    #"4fb6549a-1744-4efc-b1c8-3ed67e16c00e" = Workspaces{[workspaceId="4fb6549a-1744-4efc-b1c8-3ed67e16c00e"]}[Data],
+		    #"598cd14b-bed0-4271-94bb-b6122e1fd313" = #"4fb6549a-1744-4efc-b1c8-3ed67e16c00e"{[dataflowId="598cd14b-bed0-4271-94bb-b6122e1fd313"]}[Data],
+		    Query_2025_ = #"598cd14b-bed0-4271-94bb-b6122e1fd313"{[entity="Query_2025",version=""]}[Data],
+		    #"Renamed Columns" = Table.RenameColumns(Query_2025_,{{"勘定コード.1", "勘定コード"}, {"予算区分1.1", "予算区分"}, {"予算区分2.1", "予算目的"}})
+		in
+		    #"Renamed Columns"
+	lineageTag: 047191ad-ec8b-4d55-a1f7-bd353b55609c
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression riskEva_2023 =
+		let
+		    Source = PowerPlatform.Dataflows(null),
+		    Workspaces = Source{[Id="Workspaces"]}[Data],
+		    #"4fb6549a-1744-4efc-b1c8-3ed67e16c00e" = Workspaces{[workspaceId="4fb6549a-1744-4efc-b1c8-3ed67e16c00e"]}[Data],
+		    #"48ba1cc3-c694-4a9f-969d-e86d520fb36e" = #"4fb6549a-1744-4efc-b1c8-3ed67e16c00e"{[dataflowId="48ba1cc3-c694-4a9f-969d-e86d520fb36e"]}[Data],
+		    Query_2023_ = #"48ba1cc3-c694-4a9f-969d-e86d520fb36e"{[entity="Query_2023",version=""]}[Data]
+		in
+		    Query_2023_
+	lineageTag: 91121bba-0ab3-4d21-9e1b-6784873c42b7
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression keyword_list =
+		let
+		    Source = riskEva,
+		    #"Filtered Rows" = Table.SelectRows(Source, each ([年度] <> "2024")),
+		    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows",{"保全名称", "Index"}),
+		    ExtractWordsEndpoint = "http://nlpdev.intra.sharedom.net:5002",
+		    ExtractWordsContents = (text) =>
+		        let
+		            headers = [#"Content-Type" = "application/json"],
+		            postData = Json.FromValue([t = text]),
+		            contents = Web.Contents(ExtractWordsEndpoint, [RelativePath = "keywords",  Headers = headers, Content = postData])
+		        in
+		            contents,
+		    ExtractWords = (text) =>
+		        let
+		            words = if text <> null then Text.Combine(Json.Document(ExtractWordsContents(text))[results], " ") else ""
+		        in
+		            words,
+		    #"kw_list" = Table.AddColumn(#"Removed Other Columns","kw", each ExtractWords([#"保全名称"])),
+		    #"Split Column by Delimiter" = Table.ExpandListColumn(Table.TransformColumns(kw_list, {{"kw", Splitter.SplitTextByDelimiter(" ", QuoteStyle.Csv), let itemType = (type nullable text) meta [Serialized.Text = true] in type {itemType}}}), "kw"),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Split Column by Delimiter",{{"kw", type text}}),
+		    #"Removed Other Columns1" = Table.SelectColumns(#"Changed Type",{"Index", "kw"}),
+		    #"Removed Errors" = Table.RemoveRowsWithErrors(#"Removed Other Columns1", {"kw"})
+		in
+		    #"Removed Errors"
+		// let
+		//     Source = hozen_cycle,
+		//     #"Removed Other Columns" = Table.SelectColumns(Source,{"保全名称"})
+		// in
+		//     #"Removed Other Columns"
+	lineageTag: 5fb5c811-52e5-40f1-a9a9-dc96236bd650
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+
+expression 'DirectQuery to AS - MoneM_010_起業費・修繕費' =
+		let
+		    Source = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Unique_Digital", "MoneM_010_起業費・修繕費"),
+		    Cubes = Table.Combine(Source[Data]),
+		    Cube = Cubes{[Id="Model", Kind="Cube"]}[Data]
+		in
+		    Cube
+	lineageTag: 15dfbd93-baef-4304-867e-25bd9348f160
+
+	annotation PBI_IncludeFutureArtifacts = True
+

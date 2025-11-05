@@ -1,0 +1,44 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+queryGroup 'Transform File from hozen_cycle'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Transform File from hozen_cycle\Helper Queries'
+
+	annotation PBI_QueryGroupOrder = 0
+
+annotation PBI_QueryOrder = ["hozen_cycle","Parameter1","Transform Sample File","Sample File","Transform File","DAX","件数or金額","単位","riskEva_2023","riskEva_2024","riskEva_2025","riskEva","plantia_list","keyword_list","購買明細","予実管理","プラント略号辞書","DirectQuery to AS - MoneM_010_起業費・修繕費"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.146.1254.0 (25.08)+791a7518fadc83da883d79322a2658aff57c8db3
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table hozen_cycle
+ref table DateTableTemplate_5dd54086-328e-404b-9557-3b766852905c
+ref table Calendar
+ref table LocalDateTable_4385f358-a0e9-4b37-8358-97bc63cbb2cb
+ref table DAX
+ref table 件数or金額
+ref table 13_categorized_Table
+ref table 単位
+ref table plantia_list
+ref table LocalDateTable_2534c567-92c2-4612-8865-4db8ed1ca82a
+ref table riskEva
+ref table 購買明細
+ref table LocalDateTable_12e7798a-55b4-4717-81bc-527937c41e85
+ref table 予実管理
+ref table プラント略号辞書
+ref table Dim_専門区分
+ref table 起業費・修繕費
+
+ref cultureInfo en-US
+

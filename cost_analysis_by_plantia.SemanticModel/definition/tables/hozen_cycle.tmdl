@@ -1,0 +1,343 @@
+table hozen_cycle
+	lineageTag: ca4b5713-586f-4d67-9cee-9828e2ca4e77
+
+	column 管理区分
+		dataType: string
+		lineageTag: 6ad0d402-f60a-41d4-b031-65408dba5a85
+		summarizeBy: none
+		sourceColumn: 管理区分
+
+		annotation SummarizationSetBy = Automatic
+
+	column 機器ファミリ
+		dataType: string
+		lineageTag: 06975601-aa31-41ed-86ea-3ec1a680786d
+		summarizeBy: none
+		sourceColumn: 機器ファミリ
+
+		annotation SummarizationSetBy = Automatic
+
+	column 機器ファミリ名称
+		dataType: string
+		lineageTag: b3725a49-3aab-46cf-84a2-bdf2addab158
+		summarizeBy: none
+		sourceColumn: 機器ファミリ名称
+
+		annotation SummarizationSetBy = Automatic
+
+	column 機器タイプ
+		dataType: string
+		lineageTag: 185cac04-0e2e-4d58-bfd0-2ace6aad7cd8
+		summarizeBy: none
+		sourceColumn: 機器タイプ
+
+		annotation SummarizationSetBy = Automatic
+
+	column 機器カテゴリ名称
+		dataType: string
+		lineageTag: 82d863b1-ec66-4c9e-86b3-f30fcd4a279b
+		summarizeBy: none
+		sourceColumn: 機器カテゴリ名称
+
+		annotation SummarizationSetBy = Automatic
+
+	column 保全名称
+		dataType: string
+		lineageTag: ec5d34aa-f4f1-4b99-b9e4-1ec22b87b9d3
+		summarizeBy: none
+		sourceColumn: 保全名称
+
+		annotation SummarizationSetBy = Automatic
+
+	column 工賃
+		dataType: int64
+		formatString: #,0
+		lineageTag: e8ba890c-f689-4aad-8dfc-e0c58d3699e9
+		summarizeBy: sum
+		sourceColumn: 工賃
+
+		annotation SummarizationSetBy = Automatic
+
+	column 材料費
+		dataType: int64
+		formatString: #,0
+		lineageTag: a7abe774-f537-4bbb-bd56-9b18a9ab6ab6
+		summarizeBy: sum
+		sourceColumn: 材料費
+
+		annotation SummarizationSetBy = Automatic
+
+	column 新機番
+		dataType: string
+		lineageTag: 116b424d-fe3c-4a92-81ef-a548f1ed18cb
+		summarizeBy: none
+		sourceColumn: 新機番
+
+		annotation SummarizationSetBy = Automatic
+
+	column 原価センターコード
+		dataType: string
+		lineageTag: 80e05e43-0507-443f-a0bc-3c8c95434550
+		summarizeBy: none
+		sourceColumn: 原価センターコード
+
+		annotation SummarizationSetBy = Automatic
+
+	column 予算区分１
+		dataType: string
+		lineageTag: 51e89d58-5781-42ef-93d7-7b4f6209f8ad
+		summarizeBy: none
+		sourceColumn: 予算区分１
+
+		annotation SummarizationSetBy = Automatic
+
+	column 予算区分２
+		dataType: string
+		lineageTag: 409505b0-1b86-4aa4-b3f6-2367c3482b08
+		summarizeBy: none
+		sourceColumn: 予算区分２
+
+		annotation SummarizationSetBy = Automatic
+
+	column 予算管理Ｎｏ
+		dataType: string
+		lineageTag: 71da8ad9-c395-4814-a01a-8454cec0851c
+		summarizeBy: none
+		sourceColumn: 予算管理Ｎｏ
+
+		annotation SummarizationSetBy = Automatic
+
+	column U_PROBABILITY_CLASS
+		dataType: string
+		lineageTag: 3cf26707-e801-454e-bc18-e55bcb70e0fd
+		summarizeBy: none
+		sourceColumn: U_PROBABILITY_CLASS
+
+		annotation SummarizationSetBy = Automatic
+
+	column date = DATE([FY],4,1)
+		formatString: General Date
+		lineageTag: a449a24a-f6d7-4e85-946a-ee19953ff54f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column FY
+		dataType: int64
+		formatString: 0
+		lineageTag: ce9c82cb-7fca-4dce-abe9-b9e6badad171
+		summarizeBy: sum
+		sourceColumn: FY
+
+		annotation SummarizationSetBy = Automatic
+
+	column 管理区分2 =
+			
+			SWITCH(
+			    TRUE(),
+			    [管理区分]="M", "M",
+			    [管理区分]="E", "E",
+			    [管理区分]="I", "E",
+			    [管理区分]="C", "E",
+			    [管理区分]
+			)
+		lineageTag: e8150f40-21f3-4dcd-916d-e7c1bb141d43
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 新旧_機番 =
+			
+			SWITCH(
+			    TRUE(),
+			    [機番]="",[新機番],
+			    [機番]
+			)
+		lineageTag: fd7c54b4-09c3-4669-b511-94694fcbbf9a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 設備コード
+		dataType: string
+		lineageTag: 9da26984-ec58-439c-b737-0acd7125224b
+		summarizeBy: none
+		sourceColumn: 設備コード
+
+		annotation SummarizationSetBy = Automatic
+
+	column 周期
+		dataType: string
+		lineageTag: c2492786-06c8-4937-beeb-2c35b17f7d3d
+		summarizeBy: none
+		sourceColumn: 周期
+
+		annotation SummarizationSetBy = Automatic
+
+	column 周期設定理由
+		dataType: string
+		lineageTag: 5385224b-86f8-466d-87de-f2e53cc21545
+		summarizeBy: none
+		sourceColumn: 周期設定理由
+
+		annotation SummarizationSetBy = Automatic
+
+	column 周期根拠
+		dataType: string
+		lineageTag: ee22f963-2d55-4f52-9c00-453593edcd53
+		summarizeBy: none
+		sourceColumn: 周期根拠
+
+		annotation SummarizationSetBy = Automatic
+
+	column U_MAX_EVA_NEW
+		dataType: string
+		lineageTag: f945278a-a0c8-41d0-aa0a-b097e2d4bf6f
+		summarizeBy: none
+		sourceColumn: U_MAX_EVA_NEW
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Source.Name.2.2'
+		dataType: string
+		lineageTag: 12d2e15f-3c4a-4e97-b3f0-7f9b7a67e5cd
+		summarizeBy: none
+		sourceColumn: Source.Name.2.2
+
+		annotation SummarizationSetBy = Automatic
+
+	column 設備名称
+		dataType: string
+		lineageTag: c45c13d0-d8aa-46c6-ba32-6e632dd65dbd
+		summarizeBy: none
+		sourceColumn: 設備名称
+
+		annotation SummarizationSetBy = Automatic
+
+	column 機番
+		dataType: string
+		lineageTag: 8f31ab6e-363f-4e6c-83bc-30683a5aeeaf
+		summarizeBy: none
+		sourceColumn: 機番
+
+		annotation SummarizationSetBy = Automatic
+
+	column 機器名称
+		dataType: string
+		lineageTag: c600a0b2-0104-451d-a5ec-5167edb262b1
+		summarizeBy: none
+		sourceColumn: 機器名称
+
+		annotation SummarizationSetBy = Automatic
+
+	column 保全周期
+		dataType: string
+		lineageTag: 26f29758-2aba-4c98-ab7b-824d0c200375
+		summarizeBy: none
+		sourceColumn: 保全周期
+
+		annotation SummarizationSetBy = Automatic
+
+	column プラントコード
+		dataType: string
+		lineageTag: 6c82cff3-7758-47b2-a70d-dfebd8da05bf
+		summarizeBy: none
+		sourceColumn: プラントコード
+
+		annotation SummarizationSetBy = Automatic
+
+	column 勘定コード
+		dataType: string
+		lineageTag: 2c6660d2-19f5-49af-a916-2355d03e6fd1
+		summarizeBy: none
+		sourceColumn: 勘定コード
+
+		annotation SummarizationSetBy = Automatic
+
+	column プロセス名称
+		dataType: string
+		lineageTag: 539614df-57de-4f4b-b2fb-4a2d85439151
+		summarizeBy: none
+		sourceColumn: プロセス名称
+
+		annotation SummarizationSetBy = Automatic
+
+	column 評価指標
+		dataType: string
+		lineageTag: 174ccfef-5b70-4a57-bbcd-6058cc48488d
+		summarizeBy: none
+		sourceColumn: 評価指標
+
+		annotation SummarizationSetBy = Automatic
+
+	column 改定日
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 14329797-1353-4ed3-b038-ba16e0304f6a
+		summarizeBy: none
+		sourceColumn: 改定日
+
+		variation Variation
+			isDefault
+			relationship: ea50f50b-598e-41b0-8545-511d68e4eaa9
+			defaultHierarchy: LocalDateTable_2534c567-92c2-4612-8865-4db8ed1ca82a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 評価指標_1
+		dataType: string
+		lineageTag: b3ac4ff9-412e-4823-8b52-2bacd353ac45
+		summarizeBy: none
+		sourceColumn: 評価指標_1
+
+		annotation SummarizationSetBy = Automatic
+
+	column 優先度
+		dataType: string
+		lineageTag: 1440399e-817e-4a2f-b07b-92db9caf7c08
+		summarizeBy: none
+		sourceColumn: 優先度
+
+		annotation SummarizationSetBy = Automatic
+
+	column '判定SE QCD'
+		dataType: string
+		lineageTag: 8612be41-d567-4a88-a768-8bb5d939d05e
+		summarizeBy: none
+		sourceColumn: 判定SE QCD
+
+		annotation SummarizationSetBy = Automatic
+
+	partition hozen_cycle = m
+		mode: import
+		source =
+				let
+				    ソース = SharePoint.Contents("https://mchcgr.sharepoint.com/sites/MCJP-DP-101P1",[ApiVersion=15]),
+				    #"101P180_Employee" = ソース{[Name="101P180_Employee"]}[Content],
+				    #"101P180 設備技術部 社員" = #"101P180_Employee"{[Name="101P180 設備技術部 社員"]}[Content],
+				    #"M システム・ネットワーク" = #"101P180 設備技術部 社員"{[Name="M.システム・ネットワーク"]}[Content],
+				    #"M7 PowerBI" = #"M システム・ネットワーク"{[Name="M7.PowerBI"]}[Content],
+				    #"(運用中)" = #"M7 PowerBI"{[Name="(運用中)"]}[Content],
+				    保全周期_コスト分析 = #"(運用中)"{[Name="保全周期_コスト分析"]}[Content],
+				    #"Filtered Hidden Files1" = Table.SelectRows(保全周期_コスト分析, each [Attributes]?[Hidden]? <> true),
+				    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File", each #"Transform File"([Content])),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+				    #"Removed Other Columns1" = Table.SelectColumns(#"Renamed Columns1", {"Source.Name", "Transform File"}),
+				    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File", Table.ColumnNames(#"Transform File"(#"Sample File"))),
+				    #"Filtered Rows" = Table.SelectRows(#"Expanded Table Column1", each ([予算区分２] <> null and [予算区分２] <> "HZ" and [予算区分２] <> "KG" and [予算区分２] <> "起業")),
+				    #"Split Column by Delimiter" = Table.SplitColumn(#"Filtered Rows", "Source.Name", Splitter.SplitTextByEachDelimiter({"_"}, QuoteStyle.Csv, false), {"Source.Name.1", "Source.Name.2"}),
+				    #"Split Column by Delimiter1" = Table.SplitColumn(#"Split Column by Delimiter", "Source.Name.2", Splitter.SplitTextByEachDelimiter({"_"}, QuoteStyle.Csv, false), {"Source.Name.2.1", "Source.Name.2.2"}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Split Column by Delimiter1",".xlsx","",Replacer.ReplaceText,{"Source.Name.2.1"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Replaced Value",{{"Source.Name.2.1", "FY"}}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Renamed Columns", each [FY] = "2026" or [FY] = "2027" or [FY] = "2028" or [FY] = "2029" or [FY] = "2030" or [FY] = "2031"),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Filtered Rows1",{{"FY", Int64.Type}, {"工賃", Int64.Type}, {"材料費", Int64.Type}, {"改定日", type date}}),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Changed Type",{"FY", "Source.Name.2.2", "管理区分", "設備コード", "設備名称", "機番", "機器名称", "機器ファミリ", "機器ファミリ名称", "機器タイプ", "機器カテゴリ名称", "プロセス名称", "保全名称", "保全周期", "周期", "周期設定理由", "工賃", "材料費", "改定日", "新機番", "評価指標", "評価指標_1", "優先度", "判定SE QCD", "周期根拠", "プラントコード", "原価センターコード", "勘定コード", "予算区分１", "予算区分２", "予算管理Ｎｏ", "U_MAX_EVA_NEW", "U_PROBABILITY_CLASS"})
+				in
+				    #"Removed Other Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

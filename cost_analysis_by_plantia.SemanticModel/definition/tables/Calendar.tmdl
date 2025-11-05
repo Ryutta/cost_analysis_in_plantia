@@ -1,0 +1,92 @@
+table Calendar
+	lineageTag: da2917ae-a4ec-440e-96b4-d8352b8290c6
+
+	column Date
+		formatString: General Date
+		lineageTag: adf83011-55fd-4871-8354-bfbebb269609
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: ec92ae2a-374a-478a-b5b1-f07971c38e1c
+			defaultHierarchy: LocalDateTable_4385f358-a0e9-4b37-8358-97bc63cbb2cb.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		lineageTag: 9e31bea9-f333-475c-9382-039e24f75c79
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Number'
+		formatString: 0
+		lineageTag: f2ab4303-7bc3-4758-8728-53d26b591cb7
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Month Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		lineageTag: 8966bd4a-23f0-4aa6-b300-dd4838494ae3
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		lineageTag: 6a6ca289-5a45-45e2-af04-352a11a6213e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column FY
+		lineageTag: f89d738b-452e-4535-8af3-edaebe41708f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [FY]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Number2'
+		formatString: 0
+		lineageTag: 5b22e571-bafe-4394-9325-7ffaedbf3932
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Month Number2]
+
+		annotation SummarizationSetBy = Automatic
+
+	column FY_num = VALUE([FY])
+		lineageTag: 19957702-034a-48fa-8c44-5283cb02ec9e
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Calendar = calculated
+		mode: import
+		source =
+				
+				ADDCOLUMNS(
+				    CALENDAR( DATE( 2016,4,1), DATE(2032,3,31)),
+				    "Month", FORMAT([Date], "MM"),
+				    "Month Number", MONTH( [Date]),
+				    "Year", FORMAT([Date], "YYYY"),
+				    "Quarter", "Q" & QUARTER([Date]),
+				    "FY",
+				    FORMAT(IF(MONTH([Date])<=3,value(FORMAT([Date],"YYYY"))-1,VALUE(FORMAT([Date],"YYYY"))),"General Number"),
+				    "Month Number2",IF(MONTH([Date])<=3,month([Date])+9,MONTH([Date])-3)
+				)
+
+	annotation PBI_Id = efa196f5cf5741df9557602157f15a91
+

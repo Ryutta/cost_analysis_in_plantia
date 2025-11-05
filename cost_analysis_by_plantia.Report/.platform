@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "cost_analysis_by_plantia"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "1ba57417-8a90-4964-b2cd-b552c81c534f"
+  }
+}

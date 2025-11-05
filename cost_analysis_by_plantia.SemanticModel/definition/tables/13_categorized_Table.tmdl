@@ -1,0 +1,17 @@
+table 13_categorized_Table
+	lineageTag: d3c152ed-0a5c-49f5-b1a4-289e69dabf3e
+
+	column 予算区分２
+		lineageTag: f7f18a5c-4c39-4a29-b463-a08327a3ad94
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: hozen_cycle[予算区分２]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 13_categorized_Table = calculated
+		mode: import
+		source = VALUES('hozen_cycle'[予算区分２])
+
+	annotation PBI_Id = 36fd4b99e2e644658d831f2a9a89e4fc
+

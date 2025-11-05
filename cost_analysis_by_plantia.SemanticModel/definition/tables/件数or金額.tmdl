@@ -1,0 +1,24 @@
+table 件数or金額
+	lineageTag: f83dfa89-0072-40fa-954d-59730008b765
+
+	column 選択
+		dataType: string
+		lineageTag: e394be79-fa6e-4de5-bbd6-f268023a7cd5
+		summarizeBy: none
+		sourceColumn: 選択
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 件数or金額 = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WerJ727OpG5RidaKVXrZPfLmwF4mpD5OMBQA=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [選択 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"選択", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

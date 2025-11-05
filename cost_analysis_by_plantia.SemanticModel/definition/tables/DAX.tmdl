@@ -1,0 +1,692 @@
+table DAX
+	lineageTag: f9961b2f-c105-476f-9008-6b7d26f60a28
+
+	measure cost_plantia_工賃 = SUM('hozen_cycle'[工賃])
+		formatString: #,0
+		lineageTag: 9bcb591e-c78f-4ee1-9d60-87ea969983a1
+
+	measure cost_購買 = ```
+			
+			VAR
+			_x = CALCULATE(
+			    SUM('購買明細'[実績明細金額]),
+			    '購買明細'[区分]="修繕費",
+			    '購買明細'[事業領域コード]="92",
+			    TREATAS(VALUES('Dim_専門区分'[専門区分]),'購買明細'[専門区分])
+			)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('単位'[単位])="億円",_x/100000000,
+			    SELECTEDVALUE('単位'[単位])="百万円",_x/1000000,
+			    SELECTEDVALUE('単位'[単位])="千円",_x/1000,
+			    SELECTEDVALUE('単位'[単位])="円",_x,    
+			    _x
+			)
+			```
+		formatString: #,0
+		lineageTag: 19cbcbb9-aec0-4c85-9835-17d0a6d460e3
+
+	measure cost_plantia_材料 = SUM('hozen_cycle'[材料費])
+		lineageTag: 5e09817b-4532-468c-ae6a-f09b6f6fb419
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure cost_plantia_total = ```
+			
+			VAR
+			_kouchin = SUM('hozen_cycle'[工賃])
+			VAR
+			_zairyou = SUM('hozen_cycle'[材料費])
+			VAR
+			_x = _kouchin + _zairyou
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('単位'[単位])="億円",_x/100000000,
+			    SELECTEDVALUE('単位'[単位])="百万円",_x/1000000,
+			    SELECTEDVALUE('単位'[単位])="千円",_x/1000,
+			    SELECTEDVALUE('単位'[単位])="円",_x,    
+			    _x
+			)
+			```
+		formatString: #,0
+		lineageTag: 04f45aa5-ab27-40b0-b997-0b13442fd334
+
+	measure rank_by_family =
+			
+			VAR
+			_cost_rank = RANKX(ALLSELECTED('plantia_list'[機器ファミリ]),CALCULATE([cost_plantia_total]),,,Dense)
+			VAR
+			_cost_best10 =
+			SWITCH(
+			    TRUE(),
+			    _cost_rank<=10, _cost_rank,
+			    BLANK()
+			)
+			VAR
+			_count_rank = RANKX(ALLSELECTED('plantia_list'[機器ファミリ]),CALCULATE([# row_count]),,,Dense)
+			VAR
+			_count_best10 =
+			SWITCH(
+			    TRUE(),
+			    _count_rank<=10, _count_rank,
+			    BLANK()
+			)
+			VAR
+			_cost_per_count_rank = RANKX(ALLSELECTED('plantia_list'[機器ファミリ]),CALCULATE([cost_per_count]),,,Dense)
+			VAR
+			_count_per_count_best10 =
+			SWITCH(
+			    TRUE(),
+			    _cost_per_count_rank<=10, _cost_per_count_rank,
+			    BLANK()
+			)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('件数or金額'[選択])="金額",_cost_best10,
+			    SELECTEDVALUE('件数or金額'[選択])="件数",_count_best10,
+			    SELECTEDVALUE('件数or金額'[選択])="金額/件数",_count_per_count_best10
+			)
+		formatString: 0
+		displayFolder: plantia
+		lineageTag: d376d151-1dd6-4aad-b367-7f945703bc86
+
+	measure ribbon_size_family =
+			
+			VAR
+			_temp = 1 + [rank_by_family] * 0.01
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _temp>1,_temp,
+			    BLANK()
+			)
+		displayFolder: plantia
+		lineageTag: 6d16de9e-7293-49f4-85ed-a5b890043746
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure rank_by_type =
+			
+			VAR
+			_cost_rank = RANKX(ALLSELECTED('plantia_list'[機器ファミリ_機器タイプ]),CALCULATE([cost_plantia_total]),,,Dense)
+			VAR
+			_cost_best10 =
+			SWITCH(
+			    TRUE(),
+			    _cost_rank<=10, _cost_rank,
+			    BLANK()
+			)
+			VAR
+			_count_rank = RANKX(ALLSELECTED('plantia_list'[機器ファミリ_機器タイプ]),CALCULATE([# row_count]),,,Dense)
+			VAR
+			_count_best10 =
+			SWITCH(
+			    TRUE(),
+			    _count_rank<=10, _count_rank,
+			    BLANK()
+			)
+			VAR
+			_cost_per_count_rank = RANKX(ALLSELECTED('plantia_list'[機器ファミリ_機器タイプ]),CALCULATE([cost_per_count]),,,Dense)
+			VAR
+			_count_per_count_best10 =
+			SWITCH(
+			    TRUE(),
+			    _cost_per_count_rank<=10, _cost_per_count_rank,
+			    BLANK()
+			)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('件数or金額'[選択])="金額",_cost_best10,
+			    SELECTEDVALUE('件数or金額'[選択])="件数",_count_best10,
+			    SELECTEDVALUE('件数or金額'[選択])="金額/件数",_count_per_count_best10
+			)
+		formatString: 0
+		displayFolder: plantia
+		lineageTag: 400df3e6-e4ce-4f6c-97fb-914b204a0ef3
+
+	measure ribbon_size_type =
+			
+			VAR
+			_temp = 1 + [rank_by_type] * 0.01
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _temp>1,_temp,
+			    BLANK()
+			)
+		displayFolder: plantia
+		lineageTag: 9c704bc2-059e-4b3f-955b-c780769dba48
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure rank_by_name =
+			
+			VAR
+			_cost_rank = RANKX(ALLSELECTED('hozen_cycle'[新機番]),CALCULATE([cost_plantia_total]),,,Dense)
+			VAR
+			_cost_best5 =
+			SWITCH(
+			    TRUE(),
+			    _cost_rank<=5, _cost_rank,
+			    BLANK()
+			)
+			VAR
+			_count_rank = RANKX(ALLSELECTED('hozen_cycle'[新機番]),CALCULATE([# row_count]),,,Dense)
+			VAR
+			_count_best5 =
+			SWITCH(
+			    TRUE(),
+			    _count_rank<=5, _count_rank,
+			    BLANK()
+			)
+			VAR
+			_cost_per_count_rank = RANKX(ALLSELECTED('hozen_cycle'[新機番]),CALCULATE([cost_per_count]),,,Dense)
+			VAR
+			_count_per_count_best5 =
+			SWITCH(
+			    TRUE(),
+			    _cost_per_count_rank<=5, _cost_per_count_rank,
+			    BLANK()
+			)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('件数or金額'[選択])="金額",_cost_best5,
+			    SELECTEDVALUE('件数or金額'[選択])="件数",_count_best5,
+			    SELECTEDVALUE('件数or金額'[選択])="金額/件数",_count_per_count_best5
+			)
+		formatString: 0
+		displayFolder: plantia
+		lineageTag: 55c20322-afd6-4752-b4c5-fde492227080
+
+	measure ribbon_size_name =
+			
+			VAR
+			_temp = 1 + [rank_by_name] * 0.01
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _temp>1,_temp,
+			    BLANK()
+			)
+		displayFolder: plantia
+		lineageTag: 82a6c13b-e5ed-4228-9863-c5befefbdd65
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '# row_count' = COUNTROWS('hozen_cycle')
+		formatString: #,0
+		displayFolder: plantia
+		lineageTag: f521d3f7-d322-406c-8763-f602b7bd06d4
+
+	measure rank_by_plant =
+			
+			VAR
+			_cost_rank = RANKX(ALLSELECTED('プラント略号辞書'[プラント略号]),CALCULATE([cost_plantia_total]),,,Dense)
+			VAR
+			_cost_best10 =
+			SWITCH(
+			    TRUE(),
+			    _cost_rank<=10, _cost_rank,
+			    BLANK()
+			)
+			VAR
+			_count_rank = RANKX(ALLSELECTED('プラント略号辞書'[プラント略号]),CALCULATE([# row_count]),,,Dense)
+			VAR
+			_count_best10 =
+			SWITCH(
+			    TRUE(),
+			    _count_rank<=10, _count_rank,
+			    BLANK()
+			)
+			VAR
+			_cost_per_count_rank = RANKX(ALLSELECTED('プラント略号辞書'[プラント略号]),CALCULATE([cost_per_count]),,,Dense)
+			VAR
+			_count_per_count_best10 =
+			SWITCH(
+			    TRUE(),
+			    _cost_per_count_rank<=10, _cost_per_count_rank,
+			    BLANK()
+			)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('件数or金額'[選択])="金額",_cost_best10,
+			    SELECTEDVALUE('件数or金額'[選択])="件数",_count_best10,
+			    SELECTEDVALUE('件数or金額'[選択])="金額/件数",_count_per_count_best10
+			)
+		formatString: 0
+		displayFolder: plantia
+		lineageTag: 2ec782f5-c161-4b2f-b9bd-6a9219ea79a8
+
+	measure ribbon_size_plant =
+			
+			VAR
+			_temp = 1 + [rank_by_plant] * 0.01
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _temp>1,_temp,
+			    BLANK()
+			)
+		displayFolder: plantia
+		lineageTag: af708d15-cb41-48ae-bac0-4b9ec08ba349
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure cost_per_count = DIVIDE([cost_plantia_total],[# row_count])
+		formatString: #,0
+		displayFolder: plantia
+		lineageTag: 82e70088-64b8-4328-9cc1-bf311285f89c
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure _Diff = [cost_購買]-[cost_plantia_total]
+		formatString: #,0
+		lineageTag: 99ac7a31-c645-47ed-a85c-0a89b8ca8335
+
+	measure cost_予算 = ```
+			
+			VAR
+			_x1 = CALCULATE(
+			    SUM('予実管理'[計画予算金額]),
+			    '予実管理'[区分]="修繕費",
+			    '予実管理'[事業領域コード]="92",
+			    TREATAS(VALUES('Calendar'[FY]),'予実管理'[予算年度]),
+			    TREATAS(VALUES('プラント略号辞書'[原価センタ]),'予実管理'[原価センタ]),
+			    TREATAS(VALUES('Dim_専門区分'[専門区分]),'予実管理'[専門区分])
+			)
+			VAR
+			_x2 = 
+			CALCULATE(
+			    SUM('起業費・修繕費'[計画予算金額]),
+			    TREATAS(VALUES('Calendar'[FY]),'起業費・修繕費'[予算年度]),
+			    TREATAS(VALUES('プラント略号辞書'[原価センタ]),'起業費・修繕費'[原価センタ]),
+			    TREATAS(VALUES('Dim_専門区分'[専門区分]),'起業費・修繕費'[専門区分])
+			)
+			VAR
+			_x = _x1 + _x2
+			
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('単位'[単位])="億円",_x/100000000,
+			    SELECTEDVALUE('単位'[単位])="百万円",_x/1000000,
+			    SELECTEDVALUE('単位'[単位])="千円",_x/1000,
+			    SELECTEDVALUE('単位'[単位])="円",_x,    
+			    _x
+			)
+			```
+		lineageTag: c079fa8b-35ef-4d01-b782-a184ce842474
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure cost_riskEva = ```
+			
+			VAR
+			_x = 
+			CALCULATE(
+			    SUM('riskEva'[申請予算])*1000,
+			    TREATAS(VALUES('Dim_専門区分'[専門区分]),'riskEva'[管理区分])
+			    // TREATAS(VALUES('keyword_list'[Index]),'riskEva'[Index])
+			)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('単位'[単位])="億円",_x/100000000,
+			    SELECTEDVALUE('単位'[単位])="百万円",_x/1000000,
+			    SELECTEDVALUE('単位'[単位])="千円",_x/1000,
+			    SELECTEDVALUE('単位'[単位])="円",_x,    
+			    _x
+			)
+			```
+		formatString: #,0
+		displayFolder: riskEva
+		lineageTag: a3295524-a396-4933-b9d4-bc3f20516c51
+
+	measure cost_購買2 =
+			
+			CALCULATE(
+			    SUM('購買明細'[実績明細金額]),
+			    '購買明細'[区分]="修繕費",
+			    '購買明細'[事業領域コード]="92",
+			    TREATAS(VALUES('Dim_専門区分'[専門区分]),'購買明細'[専門区分]),
+			    TREATAS(VALUES('plantia_list'[機番]),'購買明細'[機番])
+			)
+		formatString: #,0
+		lineageTag: cc6006aa-0c9f-4d04-b854-cf86fd3f1e62
+
+	measure cost_plantia_工賃2 =
+			
+			CALCULATE(
+			    SUM('hozen_cycle'[工賃])
+			)
+		formatString: #,0
+		lineageTag: caa23387-515e-4d76-8589-100cc8e1d0da
+
+	measure rank_by_family_riskEva =
+			
+			VAR
+			_cost_rank = RANKX(ALLSELECTED('plantia_list'[機器ファミリ]),CALCULATE([cost_riskEva]),,,Dense)
+			VAR
+			_cost_best10 =
+			SWITCH(
+			    TRUE(),
+			    _cost_rank<=10, _cost_rank,
+			    BLANK()
+			)
+			VAR
+			_count_rank = RANKX(ALLSELECTED('plantia_list'[機器ファミリ]),CALCULATE([count_riskEva]),,,Dense)
+			VAR
+			_count_best10 =
+			SWITCH(
+			    TRUE(),
+			    _count_rank<=10, _count_rank,
+			    BLANK()
+			)
+			VAR
+			_cost_per_count_rank = RANKX(ALLSELECTED('plantia_list'[機器ファミリ]),CALCULATE([cost_per_count_riskEva]),,,Dense)
+			VAR
+			_count_per_count_best10 =
+			SWITCH(
+			    TRUE(),
+			    _cost_per_count_rank<=10, _cost_per_count_rank,
+			    BLANK()
+			)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('件数or金額'[選択])="金額",_cost_best10,
+			    SELECTEDVALUE('件数or金額'[選択])="件数",_count_best10,
+			    SELECTEDVALUE('件数or金額'[選択])="金額/件数",_count_per_count_best10
+			)
+		formatString: 0
+		displayFolder: riskEva
+		lineageTag: 43273b5f-ec09-420e-89ff-d845372c6dfe
+
+	measure ribbon_size_family_riskEva =
+			
+			VAR
+			_temp = 1 + [rank_by_family_riskEva] * 0.01
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _temp>1,_temp,
+			    BLANK()
+			)
+		displayFolder: riskEva
+		lineageTag: fcc50a3d-0f13-4e81-8b23-460e91d4c793
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure count_riskEva = ```
+			
+			VAR
+			_x = 
+			CALCULATE(
+			    COUNTROWS('riskEva'),
+			    TREATAS(VALUES('Dim_専門区分'[専門区分]),'riskEva'[管理区分])
+			)
+			RETURN
+			_x
+			```
+		formatString: #,0
+		displayFolder: riskEva
+		lineageTag: e923336b-f933-49a0-902c-86dbca127d55
+
+	measure cost_per_count_riskEva = DIVIDE([cost_riskEva],[count_riskEva])
+		displayFolder: riskEva
+		lineageTag: 51cd967e-f7d3-49d0-a2c9-5852a0870e96
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure rank_by_type_riskEva =
+			
+			VAR
+			_cost_rank = RANKX(ALLSELECTED('plantia_list'[機器ファミリ_機器タイプ]),CALCULATE([cost_riskEva]),,,Dense)
+			VAR
+			_cost_best10 =
+			SWITCH(
+			    TRUE(),
+			    _cost_rank<=10, _cost_rank,
+			    BLANK()
+			)
+			VAR
+			_count_rank = RANKX(ALLSELECTED('plantia_list'[機器ファミリ_機器タイプ]),CALCULATE([count_riskEva]),,,Dense)
+			VAR
+			_count_best10 =
+			SWITCH(
+			    TRUE(),
+			    _count_rank<=10, _count_rank,
+			    BLANK()
+			)
+			VAR
+			_cost_per_count_rank = RANKX(ALLSELECTED('plantia_list'[機器ファミリ_機器タイプ]),CALCULATE([cost_per_count_riskEva]),,,Dense)
+			VAR
+			_count_per_count_best10 =
+			SWITCH(
+			    TRUE(),
+			    _cost_per_count_rank<=10, _cost_per_count_rank,
+			    BLANK()
+			)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('件数or金額'[選択])="金額",_cost_best10,
+			    SELECTEDVALUE('件数or金額'[選択])="件数",_count_best10,
+			    SELECTEDVALUE('件数or金額'[選択])="金額/件数",_count_per_count_best10
+			)
+		formatString: 0
+		displayFolder: riskEva
+		lineageTag: c5333b8c-5dbd-42b2-a09e-f20e51f12329
+
+	measure ribbon_size_type_riskEva =
+			
+			VAR
+			_temp = 1 + [rank_by_type_riskEva] * 0.01
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _temp>1,_temp,
+			    BLANK()
+			)
+		displayFolder: riskEva
+		lineageTag: 7e8aa744-e0ef-4302-aa1f-0f16670f5c98
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure rank_by_plant_riskEva =
+			
+			VAR
+			_cost_rank = RANKX(ALLSELECTED('プラント略号辞書'[プラント略号]),CALCULATE([cost_riskEva]),,,Dense)
+			VAR
+			_cost_best10 =
+			SWITCH(
+			    TRUE(),
+			    _cost_rank<=10, _cost_rank,
+			    BLANK()
+			)
+			VAR
+			_count_rank = RANKX(ALLSELECTED('プラント略号辞書'[プラント略号]),CALCULATE([count_riskEva]),,,Dense)
+			VAR
+			_count_best10 =
+			SWITCH(
+			    TRUE(),
+			    _count_rank<=10, _count_rank,
+			    BLANK()
+			)
+			VAR
+			_cost_per_count_rank = RANKX(ALLSELECTED('プラント略号辞書'[プラント略号]),CALCULATE([cost_per_count_riskEva]),,,Dense)
+			VAR
+			_count_per_count_best10 =
+			SWITCH(
+			    TRUE(),
+			    _cost_per_count_rank<=10, _cost_per_count_rank,
+			    BLANK()
+			)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('件数or金額'[選択])="金額",_cost_best10,
+			    SELECTEDVALUE('件数or金額'[選択])="件数",_count_best10,
+			    SELECTEDVALUE('件数or金額'[選択])="金額/件数",_count_per_count_best10
+			)
+		formatString: 0
+		displayFolder: riskEva
+		lineageTag: 941acf18-b0ae-463b-b9f1-689b0f753097
+
+	measure rank_by_name_riskEva =
+			
+			VAR
+			_cost_rank = RANKX(ALLSELECTED('plantia_list'[新旧_機番]),CALCULATE([cost_riskEva]),,,Dense)
+			VAR
+			_cost_best5 =
+			SWITCH(
+			    TRUE(),
+			    _cost_rank<=5, _cost_rank,
+			    BLANK()
+			)
+			VAR
+			_count_rank = RANKX(ALLSELECTED('plantia_list'[新旧_機番]),CALCULATE([count_riskEva]),,,Dense)
+			VAR
+			_count_best5 =
+			SWITCH(
+			    TRUE(),
+			    _count_rank<=5, _count_rank,
+			    BLANK()
+			)
+			VAR
+			_cost_per_count_rank = RANKX(ALLSELECTED('plantia_list'[新旧_機番]),CALCULATE([cost_per_count_riskEva]),,,Dense)
+			VAR
+			_count_per_count_best5 =
+			SWITCH(
+			    TRUE(),
+			    _cost_per_count_rank<=5, _cost_per_count_rank,
+			    BLANK()
+			)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('件数or金額'[選択])="金額",_cost_best5,
+			    SELECTEDVALUE('件数or金額'[選択])="件数",_count_best5,
+			    SELECTEDVALUE('件数or金額'[選択])="金額/件数",_count_per_count_best5
+			)
+		formatString: 0
+		displayFolder: riskEva
+		lineageTag: 2b2ca564-4910-42ba-8647-b4487721e960
+
+	measure ribbon_size_name_riskEva =
+			
+			VAR
+			_temp = 1 + [rank_by_name_riskEva] * 0.01
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _temp>1,_temp,
+			    BLANK()
+			)
+		displayFolder: riskEva
+		lineageTag: aa0b9ad5-22f7-463f-882e-63763b2d2dcd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure ribbon_size_plant_riskEva =
+			
+			VAR
+			_temp = 1 + [rank_by_plant_riskEva] * 0.01
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _temp>1,_temp,
+			    BLANK()
+			)
+		displayFolder: riskEva
+		lineageTag: 07afa14b-284b-4440-9e83-5bb553e88508
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure count_kw = COUNTROWS('keyword_list')
+		formatString: #,0
+		displayFolder: riskEva
+		lineageTag: 4a335259-e2ec-41f4-b663-b728b1a3a270
+
+	measure cost_per_count_kw = DIVIDE([cost_riskEva_kw],[count_kw])
+		formatString: #,0
+		displayFolder: riskEva
+		lineageTag: 724bfde6-55d5-4c93-8fa0-cf7c92f7e024
+
+	measure cost_riskEva_kw = ```
+			
+			VAR
+			_x = 
+			CALCULATE(
+			    SUM('riskEva'[申請予算])*1000,
+			    TREATAS(VALUES('Dim_専門区分'[専門区分]),'riskEva'[管理区分]),
+			    TREATAS(VALUES('keyword_list'[Index]),'riskEva'[Index])
+			)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('単位'[単位])="億円",_x/100000000,
+			    SELECTEDVALUE('単位'[単位])="百万円",_x/1000000,
+			    SELECTEDVALUE('単位'[単位])="千円",_x/1000,
+			    SELECTEDVALUE('単位'[単位])="円",_x,    
+			    _x
+			)
+			```
+		formatString: #,0
+		displayFolder: riskEva
+		lineageTag: 9b74a595-3799-4d84-8d6a-bec927415cf9
+
+	measure _cost_throughout = [cost_plantia_total]+[cost_riskEva]
+		lineageTag: 873278a8-23e3-48bd-a1af-45f44cbf48bc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure cost_per_cycle = ```
+			
+			VAR
+			_x = 
+			CALCULATE(
+			    SUM('riskEva'[単年度換算])*1000,
+			    TREATAS(VALUES('Dim_専門区分'[専門区分]),'riskEva'[管理区分])
+			    // TREATAS(VALUES('keyword_list'[Index]),'riskEva'[Index])
+			)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('単位'[単位])="億円",_x/100000000,
+			    SELECTEDVALUE('単位'[単位])="百万円",_x/1000000,
+			    SELECTEDVALUE('単位'[単位])="千円",_x/1000,
+			    SELECTEDVALUE('単位'[単位])="円",_x,    
+			    _x
+			)
+			```
+		formatString: #,0
+		displayFolder: riskEva
+		lineageTag: 9b0be29f-9624-4325-a817-e6af46b42c9e
+
+	measure cost_cycle_all = [cost_per_cycle]*[count_riskEva]
+		displayFolder: riskEva
+		lineageTag: 408ba9ea-6bd5-4baf-888d-e55461933802
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition DAX = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

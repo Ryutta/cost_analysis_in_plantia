@@ -1,0 +1,109 @@
+table plantia_list
+	lineageTag: 0c494664-e403-498f-9dd0-93edd9821397
+
+	column 管理区分
+		dataType: string
+		lineageTag: a1695f6f-d079-45e1-a9a2-419a19500d1b
+		summarizeBy: none
+		sourceColumn: 管理区分
+
+		annotation SummarizationSetBy = Automatic
+
+	column 設備名称
+		dataType: string
+		lineageTag: cdf8fb20-d309-486c-8e34-0c3eec1ef767
+		summarizeBy: none
+		sourceColumn: 設備名称
+
+		annotation SummarizationSetBy = Automatic
+
+	column 機器ファミリ
+		dataType: string
+		lineageTag: 65c705ce-37e2-4ab1-982a-d359ec92bbae
+		summarizeBy: none
+		sourceColumn: 機器ファミリ
+
+		annotation SummarizationSetBy = Automatic
+
+	column 機器ファミリ名称
+		dataType: string
+		lineageTag: 09a6f2cf-7063-4457-a565-60014ed5fc55
+		summarizeBy: none
+		sourceColumn: 機器ファミリ名称
+
+		annotation SummarizationSetBy = Automatic
+
+	column 機器タイプ
+		dataType: string
+		lineageTag: 1a6a4402-73e8-4ce3-9bc1-699465fdf39d
+		summarizeBy: none
+		sourceColumn: 機器タイプ
+
+		annotation SummarizationSetBy = Automatic
+
+	column 機器カテゴリ名称
+		dataType: string
+		lineageTag: 473ef79d-f297-497a-b966-4e31738b1964
+		summarizeBy: none
+		sourceColumn: 機器カテゴリ名称
+
+		annotation SummarizationSetBy = Automatic
+
+	column 機器重要度
+		dataType: string
+		lineageTag: 5ccc0940-efed-4c7e-b280-ba2085ab76bd
+		summarizeBy: none
+		sourceColumn: 機器重要度
+
+		annotation SummarizationSetBy = Automatic
+
+	column 機番
+		dataType: string
+		lineageTag: 560d4e95-c3cc-465a-a024-a7c783f722df
+		summarizeBy: none
+		sourceColumn: 機番
+
+		annotation SummarizationSetBy = Automatic
+
+	column 新機番
+		dataType: string
+		lineageTag: 029d6f01-d72b-415a-be59-b208680742cc
+		summarizeBy: none
+		sourceColumn: 新機番
+
+		annotation SummarizationSetBy = Automatic
+
+	column 新旧_機番
+		dataType: string
+		lineageTag: 53137e28-bb98-4e0d-b45b-c4419f4449c5
+		summarizeBy: none
+		sourceColumn: 新旧_機番
+
+		annotation SummarizationSetBy = Automatic
+
+	column 機器ファミリ_機器タイプ = [機器ファミリ]&"_"&[機器タイプ]
+		lineageTag: ce094e6b-b12a-40ce-997e-6dcc924b2d4d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition plantia_list = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"4fb6549a-1744-4efc-b1c8-3ed67e16c00e" = Workspaces{[workspaceId="4fb6549a-1744-4efc-b1c8-3ed67e16c00e"]}[Data],
+				    #"154d4e87-ef42-45db-990b-b08596fa45c4" = #"4fb6549a-1744-4efc-b1c8-3ed67e16c00e"{[dataflowId="154d4e87-ef42-45db-990b-b08596fa45c4"]}[Data],
+				    plantia_list_ = #"154d4e87-ef42-45db-990b-b08596fa45c4"{[entity="plantia_list",version=""]}[Data],
+				    addColumn = Table.AddColumn(plantia_list_, "新旧_機番", each if [機番] = null or [機番] = "" then [新機番] else [機番], type text),
+				    #"Uppercased Text" = Table.TransformColumns(addColumn,{{"新旧_機番", Text.Upper, type text}}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Uppercased Text",{{"新旧_機番", Text.Trim, type text}}),
+				    #"Removed Duplicates" = Table.Distinct(#"Trimmed Text", {"新旧_機番"})
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

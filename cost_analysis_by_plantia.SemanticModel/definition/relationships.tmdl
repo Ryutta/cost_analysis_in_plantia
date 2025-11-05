@@ -1,0 +1,55 @@
+relationship ec92ae2a-374a-478a-b5b1-f07971c38e1c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendar.Date
+	toColumn: LocalDateTable_4385f358-a0e9-4b37-8358-97bc63cbb2cb.Date
+
+relationship 14a6b2d5-421a-46a6-7735-c8e233fe7413
+	fromColumn: hozen_cycle.date
+	toColumn: Calendar.Date
+
+relationship eea14996-35ad-881d-df14-3a0ee1838ec1
+	fromColumn: hozen_cycle.予算区分２
+	toColumn: 13_categorized_Table.予算区分２
+
+relationship 73f3618b-358c-d6f1-0f75-80bc0481b59b
+	fromColumn: hozen_cycle.新旧_機番
+	toColumn: plantia_list.新旧_機番
+
+relationship ea50f50b-598e-41b0-8545-511d68e4eaa9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: hozen_cycle.改定日
+	toColumn: LocalDateTable_2534c567-92c2-4612-8865-4db8ed1ca82a.Date
+
+relationship 649ffd62-a98a-130e-221f-c08f81440848
+	fromColumn: riskEva.Date
+	toColumn: Calendar.Date
+
+relationship 040237dc-204d-f7d7-2b80-ab5798f3fb14
+	fromColumn: riskEva.新旧_機番
+	toColumn: plantia_list.新旧_機番
+
+relationship 7a01e2b2-41e9-475a-9d76-e6b8e0cb3897
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 購買明細.更新年月日
+	toColumn: LocalDateTable_12e7798a-55b4-4717-81bc-527937c41e85.Date
+
+relationship c502d98a-75d4-2d73-02af-c6849d739a2a
+	fromColumn: 購買明細.原価センタ
+	toColumn: プラント略号辞書.原価センタ
+
+relationship 97fd252e-6dc3-ce90-abb0-862ef72ea129
+	fromColumn: riskEva.原価センタ
+	toColumn: プラント略号辞書.原価センタ
+
+relationship a8de034b-361e-596b-8fe7-140772977348
+	fromColumn: 予実管理.原価センタ
+	toColumn: プラント略号辞書.原価センタ
+
+relationship 4981b6ce-09aa-0995-3a67-341c88718e55
+	fromColumn: 購買明細.購買依頼日
+	toColumn: Calendar.Date
+
+relationship c302a80a-ef9b-f2bf-169f-cc180c499ce1
+	fromColumn: hozen_cycle.原価センターコード
+	toColumn: プラント略号辞書.原価センタ
+

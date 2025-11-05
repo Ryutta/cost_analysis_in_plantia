@@ -1,0 +1,79 @@
+table プラント略号辞書
+	lineageTag: 7a95db16-db96-4cf6-974c-23093c007635
+
+	column 部コード
+		dataType: string
+		lineageTag: 51c96683-777f-4332-b8cb-12559f8815c7
+		summarizeBy: none
+		sourceColumn: 部コード
+
+		annotation SummarizationSetBy = Automatic
+
+	column 部名称
+		dataType: string
+		lineageTag: 71fa9fc4-5fe5-4ccb-afba-2e5626b537a8
+		summarizeBy: none
+		sourceColumn: 部名称
+
+		annotation SummarizationSetBy = Automatic
+
+	column 課コード
+		dataType: string
+		lineageTag: 73125c50-11f7-4d39-a574-0b46bd17dbfc
+		summarizeBy: none
+		sourceColumn: 課コード
+
+		annotation SummarizationSetBy = Automatic
+
+	column 課名称
+		dataType: string
+		lineageTag: 0b58aa1d-6a3f-40a8-a3f5-9beb53b018fe
+		summarizeBy: none
+		sourceColumn: 課名称
+
+		annotation SummarizationSetBy = Automatic
+
+	column プラント略号
+		dataType: string
+		lineageTag: cd609f1e-89bc-47c9-a580-9cdff9eac7b1
+		summarizeBy: none
+		sourceColumn: プラント略号
+
+		annotation SummarizationSetBy = Automatic
+
+	column プラント略号名称
+		dataType: string
+		lineageTag: a9ce2455-d3e0-4c07-8655-4a4aab87277d
+		summarizeBy: none
+		sourceColumn: プラント略号名称
+
+		annotation SummarizationSetBy = Automatic
+
+	column 原価センタ
+		dataType: string
+		lineageTag: 1a6cb8c1-f2c6-4b63-a632-cf7bbc4ddbc5
+		summarizeBy: none
+		sourceColumn: 原価センタ
+
+		annotation SummarizationSetBy = Automatic
+
+	column BG名称
+		dataType: string
+		lineageTag: 17cefc9d-f6ef-4fd6-a76d-c8097dddaec0
+		summarizeBy: none
+		sourceColumn: BG名称
+
+		annotation SummarizationSetBy = Automatic
+
+	partition プラント略号辞書 = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"4fb6549a-1744-4efc-b1c8-3ed67e16c00e" = Workspaces{[workspaceId="4fb6549a-1744-4efc-b1c8-3ed67e16c00e"]}[Data],
+				    #"8d95c07d-ca5d-4abc-86d3-4720c72c4565" = #"4fb6549a-1744-4efc-b1c8-3ed67e16c00e"{[dataflowId="8d95c07d-ca5d-4abc-86d3-4720c72c4565"]}[Data],
+				    プラント略号辞書_ = #"8d95c07d-ca5d-4abc-86d3-4720c72c4565"{[entity="プラント略号辞書",version=""]}[Data]
+				in
+				    プラント略号辞書_
+

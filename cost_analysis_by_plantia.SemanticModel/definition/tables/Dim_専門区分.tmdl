@@ -1,0 +1,17 @@
+table Dim_専門区分
+	lineageTag: f582660c-ee15-408d-aa4c-ab4cf8e7b86b
+
+	column 専門区分
+		lineageTag: 00d5332d-00d5-4309-ba1a-318ea5af627c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: 購買明細[専門区分]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_専門区分 = calculated
+		mode: import
+		source = VALUES('購買明細'[専門区分])
+
+	annotation PBI_Id = 53b996374e824530b75e8ddb060c3331
+

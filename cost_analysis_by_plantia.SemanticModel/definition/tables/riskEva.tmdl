@@ -1,0 +1,307 @@
+table riskEva
+	lineageTag: baca9cca-9ab4-47d2-9fbc-209df7d51f72
+
+	column 管理区分
+		dataType: string
+		lineageTag: 0ddfd7c8-78ed-4fdc-8f73-d8fd0238a6e5
+		summarizeBy: none
+		sourceColumn: 管理区分
+
+		annotation SummarizationSetBy = Automatic
+
+	column 機器番号
+		dataType: string
+		lineageTag: 461e7861-5817-4874-87a3-f225a63dfc0c
+		summarizeBy: none
+		sourceColumn: 機器番号
+
+		annotation SummarizationSetBy = Automatic
+
+	column 新機番
+		dataType: string
+		lineageTag: 06a820c0-6988-4472-916a-e93f645393c0
+		summarizeBy: none
+		sourceColumn: 新機番
+
+		annotation SummarizationSetBy = Automatic
+
+	column 申請予算
+		dataType: double
+		formatString: #,0
+		lineageTag: 4cab9f1a-c1eb-4b5e-b9b8-3b47ace2d972
+		summarizeBy: sum
+		sourceColumn: 申請予算
+
+		annotation SummarizationSetBy = Automatic
+
+	column 原価センタ
+		dataType: string
+		lineageTag: 8c3602c3-01fc-4dac-a618-114acf19414c
+		summarizeBy: none
+		sourceColumn: 原価センタ
+
+		annotation SummarizationSetBy = Automatic
+
+	column 勘定コード
+		dataType: string
+		lineageTag: f860daf7-55cb-412c-9f8a-e2ee8adef936
+		summarizeBy: none
+		sourceColumn: 勘定コード
+
+		annotation SummarizationSetBy = Automatic
+
+	column 予算区分
+		dataType: string
+		lineageTag: 91ab48cd-9a80-4798-8fcb-4e74bc553c4f
+		summarizeBy: none
+		sourceColumn: 予算区分
+
+		annotation SummarizationSetBy = Automatic
+
+	column 予算目的
+		dataType: string
+		lineageTag: 9f66c882-1ba1-4c94-931b-0f07e6837538
+		summarizeBy: none
+		sourceColumn: 予算目的
+
+		annotation SummarizationSetBy = Automatic
+
+	column 予算管理No
+		dataType: string
+		lineageTag: bf6f5385-774e-4396-bdca-939e2e09b40a
+		summarizeBy: none
+		sourceColumn: 予算管理No
+
+		annotation SummarizationSetBy = Automatic
+
+	column 分類
+		dataType: string
+		lineageTag: 111493c4-4391-4c41-923b-bfef3fcb7ff1
+		summarizeBy: none
+		sourceColumn: 分類
+
+		annotation SummarizationSetBy = Automatic
+
+	column 発生確率
+		dataType: string
+		lineageTag: bcc22e78-287f-4b4e-83eb-f92df60ea359
+		summarizeBy: none
+		sourceColumn: 発生確率
+
+		annotation SummarizationSetBy = Automatic
+
+	column 優先度
+		dataType: string
+		lineageTag: df78aebf-1bdc-413e-ae5a-22d486e92f0c
+		summarizeBy: none
+		sourceColumn: 優先度
+
+		annotation SummarizationSetBy = Automatic
+
+	column 判定ＳＥＱＣＤ
+		dataType: string
+		lineageTag: 6a166c0f-0991-4f74-9266-f7304e646de8
+		summarizeBy: none
+		sourceColumn: 判定ＳＥＱＣＤ
+
+		annotation SummarizationSetBy = Automatic
+
+	column 機器重要度
+		dataType: string
+		lineageTag: 56234b7f-9b13-4d60-aa37-8c48a8186bcd
+		summarizeBy: none
+		sourceColumn: 機器重要度
+
+		annotation SummarizationSetBy = Automatic
+
+	column 年度
+		dataType: string
+		lineageTag: 49edd18c-f30c-4206-9e4a-1c7751eef254
+		summarizeBy: none
+		sourceColumn: 年度
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date = DATE(VALUE([年度]),4,1)
+		formatString: General Date
+		lineageTag: d014d6bd-4346-4542-9f1f-97548f7011d0
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 新旧_機番 =
+			
+			SWITCH(
+			    TRUE(),
+			    [機器番号]="",[新機番],
+			    [機器番号]
+			)
+		lineageTag: 09faf129-b9f3-406a-b62a-171ddf101db9
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 保全名称
+		dataType: string
+		lineageTag: 2093fa93-a4eb-4cd8-9783-ba3588186a25
+		summarizeBy: none
+		sourceColumn: 保全名称
+
+		annotation SummarizationSetBy = Automatic
+
+	column Index
+		dataType: string
+		lineageTag: 0065724c-8796-45fc-9a26-17ed3566bfe4
+		summarizeBy: none
+		sourceColumn: Index
+
+		annotation SummarizationSetBy = Automatic
+
+	column 保安評価
+		dataType: double
+		lineageTag: 2d52e4cb-5674-44cc-a75e-15169bb898d9
+		summarizeBy: sum
+		sourceColumn: 保安評価
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 環境評価
+		dataType: double
+		lineageTag: 36da6f7d-6064-4ec1-8c46-f15563c55503
+		summarizeBy: sum
+		sourceColumn: 環境評価
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 生産評価
+		dataType: double
+		lineageTag: adcd815e-ef90-4273-851a-7ef19cfcfca0
+		summarizeBy: sum
+		sourceColumn: 生産評価
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 品質評価
+		dataType: double
+		lineageTag: 81971710-a8d6-4172-bf26-876c68ab8e4d
+		summarizeBy: sum
+		sourceColumn: 品質評価
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column _影響度 =
+			
+			SWITCH(
+			    TRUE(),
+			    [判定ＳＥＱＣＤ]="QCD",IF([生産評価]<[品質評価],[生産評価],[品質評価]),
+			    [判定ＳＥＱＣＤ]="SE",IF([保安評価]<[環境評価],[保安評価],[環境評価]),
+			    [_min_inf]
+			)
+		formatString: 0
+		lineageTag: 5ec9b077-3c2b-44c3-84e4-d8a9de55c813
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column _min_inf =
+			
+			VAR
+			_x1 = MIN([保安評価],[環境評価])
+			VAR
+			_x2 = min([生産評価],[品質評価])
+			RETURN
+			MIN(_x1,_x2)
+		lineageTag: 3bc297c7-3f12-4642-aad7-3b04612644ec
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column '周 期'
+		dataType: string
+		lineageTag: a6217b7f-0359-4a21-8949-5c4a3c0f2b2c
+		summarizeBy: none
+		sourceColumn: 周 期
+
+		annotation SummarizationSetBy = Automatic
+
+	column 周期2 =
+			
+			SWITCH(
+			    TRUE(),
+			    CONTAINSSTRING([周 期],"年"),VALUE(SUBSTITUTE([周 期],"年","")),
+			    // CONTAINSSTRING([周 期],"月"),VALUE(SUBSTITUTE([周 期],"ヶ月",""))/12,
+			    1
+			)
+		lineageTag: 51fb7c9a-4677-4762-951d-72b63146a906
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 積上予算
+		dataType: double
+		lineageTag: 35924c45-5302-4969-a71a-e23bd34b46de
+		summarizeBy: sum
+		sourceColumn: 積上予算
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column '勘定コード.2'
+		dataType: string
+		lineageTag: f0a11b77-9e65-4988-85be-dc58db6fb4cc
+		summarizeBy: none
+		sourceColumn: 勘定コード.2
+
+		annotation SummarizationSetBy = Automatic
+
+	column '予算区分.2'
+		dataType: string
+		lineageTag: 39ae1b94-8080-42b1-8dcd-d01435eb432e
+		summarizeBy: none
+		sourceColumn: 予算区分.2
+
+		annotation SummarizationSetBy = Automatic
+
+	column '予算目的.2'
+		dataType: string
+		lineageTag: 6848e76d-7413-4caf-8d24-d3bc136098b9
+		summarizeBy: none
+		sourceColumn: 予算目的.2
+
+		annotation SummarizationSetBy = Automatic
+
+	column 単年度換算 = [申請予算]/[周期2]
+		lineageTag: 17444741-5766-4892-8f47-f19952fdab99
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition riskEva = m
+		mode: import
+		source =
+				let
+				    Source = Table.Combine({riskEva_2024, riskEva_2025, riskEva_2023}),
+				    #"Filtered Rows" = Table.SelectRows(Source, each ([年度] <> "")),
+				    #"Added Index" = Table.AddIndexColumn(#"Filtered Rows", "Index", 1, 1, Int64.Type),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Index",{{"Index", type text}}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Changed Type", each ([管理区分] <> "" and [管理区分] <> "Total"))
+				in
+				    #"Filtered Rows1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
